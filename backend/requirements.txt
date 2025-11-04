@@ -1,0 +1,10 @@
+flask
+flask-cors
+spacy
+rapidFuzz
+mysql-connector-python
+langdetect
+requests
+smtplib
+email
+datetime

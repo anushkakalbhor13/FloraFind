@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FloraFind - AI Plant Care Assistant</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="floating-leaves">
+        <div class="leaf leaf1">🍃</div>
+        <div class="leaf leaf2">🌿</div>
+        <div class="leaf leaf3">🍀</div>
+        <div class="leaf leaf4">🌱</div>
+        <div class="leaf leaf5">🌾</div>
+    </div>
+
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-content">
+            <div class="logo">
+                <i class="fas fa-seedling"></i>
+                <span>FloraFind</span>
+            </div>
+            <nav class="nav-menu">
+                <button class="nav-btn" onclick="showSection('chat')" data-section="chat">
+                    <i class="fas fa-comments"></i> Chat
+                </button>
+                <button class="nav-btn" onclick="showSection('garden')" data-section="garden">
+                    <i class="fas fa-leaf"></i> My Garden
+                </button>
+                <button class="nav-btn" onclick="showSection('community')" data-section="community">
+                    <i class="fas fa-users"></i> Community
+                </button>
+                <button class="nav-btn" onclick="showSection('calendar')" data-section="calendar">
+                    <i class="fas fa-calendar"></i> Care Calendar
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <main class="app-main">
+        <!-- Chat Section -->
+        <section id="chat-section" class="app-section active">
+            <div class="container">
+                <!-- Welcome Section -->
+                <div id="welcomeSection" class="welcome-section">
+                    <div class="welcome-content">
+                        <h1>Welcome to FloraFind! 🌱</h1>
+                        <p>Your AI-powered plant care companion with intelligent features, gamification, and community support!</p>
+                        
+                        <div class="quick-actions">
+                            <h3>Quick Actions:</h3>
+                            <div class="quick-buttons">
+                                <button onclick="quickQuery('Summer plants for beginners')" class="quick-btn">
+                                    <i class="fas fa-sun"></i> Summer Plants
+                                </button>
+                                <button onclick="quickQuery('How to care for roses')" class="quick-btn">
+                                    <i class="fas fa-rose"></i> Rose Care
+                                </button>
+                                <button onclick="quickQuery('Indoor plants low light')" class="quick-btn">
+                                    <i class="fas fa-home"></i> Indoor Plants
+                                </button>
+                                <button onclick="quickQuery('Native plants Mumbai')" class="quick-btn">
+                                    <i class="fas fa-map-marker"></i> Local Plants
+                                </button>
+                                <button onclick="showLocationSuggestions()" class="quick-btn">
+                                    <i class="fas fa-globe"></i> Climate Suggestions
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="features-highlight">
+                            <div class="feature">
+                                <i class="fas fa-search"></i>
+                                <span>Smart Plant Search</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>Care Calendar</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-users"></i>
+                                <span>Community Tips</span>
+                            </div>
+                            <div class="feature">
+                                <i class="fas fa-leaf"></i>
+                                <span>Garden Management</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Container -->
+                <div class="chat-container" id="chat-container">
+                    <!-- Messages will appear here -->
+                </div>
+
+                <!-- Input Section -->
+                <div class="input-section">
+                    <div class="suggestions-container">
+                        <div id="suggestions" class="suggestions-box"></div>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input 
+                            type="text" 
+                            id="chatBox" 
+                            placeholder="Ask about plant care, get weather insights, or manage your garden..."
+                            onkeydown="if(event.key==='Enter') sendMessage()"
+                            oninput="showSuggestions(this.value)"
+                        >
+                        <div class="input-actions">
+                            <button onclick="toggleLanguage()" class="lang-btn" title="Change Language">
+                                <i class="fas fa-globe"></i>
+                                <span id="currentLang">EN</span>
+                            </button>
+                            <button onclick="getLocation()" class="location-btn" title="Use My Location">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </button>
+                            <button onclick="sendMessage()" class="send-btn">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- My Garden Section -->
+        <section id="garden-section" class="app-section">
+            <div class="container">
+                <h2><i class="fas fa-leaf"></i> My Garden</h2>
+                <div class="garden-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-seedling"></i>
+                        <div>
+                            <h3 id="totalPlants">0</h3>
+                            <p>Plants</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-heart"></i>
+                        <div>
+                            <h3 id="avgHealth">0</h3>
+                            <p>Avg Health</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-tree"></i>
+                        <div>
+                            <h3 id="ecoImpact">0</h3>
+                            <p>Eco Impact</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="garden-plants" class="garden-grid">
+                    <!-- User's plants will appear here -->
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Community Section -->
+        <section id="community-section" class="app-section">
+            <div class="container">
+                <h2><i class="fas fa-users"></i> Community</h2>
+                
+                <div class="community-tabs">
+                    <button class="tab-btn active" onclick="showCommunityTab('challenges')" data-tab="challenges">
+                        <i class="fas fa-trophy"></i> Challenges
+                    </button>
+                    <button class="tab-btn" onclick="showCommunityTab('tips')" data-tab="tips">
+                        <i class="fas fa-lightbulb"></i> Community Tips
+                    </button>
+                    <button class="tab-btn" onclick="showCommunityTab('share')" data-tab="share">
+                        <i class="fas fa-share"></i> Share Tips
+                    </button>
+                </div>
+
+                <div id="challenges-tab" class="community-tab-content active">
+                    <h3>🏆 Active Challenges</h3>
+                    <div id="challenges-list" class="challenges-grid">
+                        <!-- Challenges will appear here -->
+                    </div>
+                </div>
+
+                <div id="tips-tab" class="community-tab-content">
+                    <h3>💡 Community Plant Tips</h3>
+                    <div id="tips-list" class="tips-list">
+                        <!-- Community tips will appear here -->
+                    </div>
+                </div>
+
+                <div id="share-tab" class="community-tab-content">
+                    <h3>🌱 Share Your Plant Wisdom</h3>
+                    <form class="tip-form" onsubmit="submitTip(event)">
+                        <div class="form-group">
+                            <label>Plant Name:</label>
+                            <input type="text" id="tipPlantName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Your Care Tip:</label>
+                            <textarea id="tipContent" rows="4" required placeholder="Share your best plant care advice..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Location (optional):</label>
+                            <input type="text" id="tipLocation" placeholder="Your city/region">
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-paper-plane"></i> Share Tip
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Care Calendar Section -->
+        <section id="calendar-section" class="app-section">
+            <div class="container">
+                <h2><i class="fas fa-calendar"></i> Care Calendar</h2>
+                <div class="calendar-controls">
+                    <button onclick="exportCalendar()" class="export-btn">
+                        <i class="fas fa-download"></i> Export Calendar
+                    </button>
+                    <button onclick="setupReminders()" class="reminder-btn">
+                        <i class="fas fa-bell"></i> Setup Reminders
+                    </button>
+                </div>
+                
+                <div class="calendar-view">
+                    <div class="calendar-header">
+                        <button onclick="changeMonth(-1)" class="nav-btn">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <h3 id="calendar-month-year"></h3>
+                        <button onclick="changeMonth(1)" class="nav-btn">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                    
+                    <div id="calendar-grid" class="calendar-grid">
+                        <!-- Calendar will be generated here -->
+                    </div>
+                </div>
+                
+                <div class="upcoming-tasks">
+                    <h3>📋 Upcoming Care Tasks</h3>
+                    <div id="upcoming-tasks-list" class="tasks-list">
+                        <!-- Upcoming tasks will appear here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Notification System -->
+    <div id="notification-container" class="notification-container">
+        <!-- Notifications will appear here -->
+    </div>
+
+    <!-- Achievement Popup -->
+    <div id="achievement-popup" class="achievement-popup" style="display: none;">
+        <div class="achievement-content">
+            <i class="fas fa-trophy achievement-icon"></i>
+            <h3>Achievement Unlocked!</h3>
+            <div class="achievement-details">
+                <div class="badge-icon" id="achievement-badge-icon"></div>
+                <div class="badge-info">
+                    <h4 id="achievement-badge-name"></h4>
+                    <p id="achievement-badge-desc"></p>
+                    <div class="points-earned">
+                        <i class="fas fa-star"></i>
+                        <span id="achievement-points">0</span> points
+                    </div>
+                </div>
+            </div>
+            <button onclick="closeAchievement()" class="close-achievement">
+                Continue Growing! 🌱
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="app.js"></script>
+</body>
+</html>
